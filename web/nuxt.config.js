@@ -70,6 +70,10 @@ export default {
   router: {
     base: "/hydra" || "",
   },
+  server: {
+    host: "0.0.0.0",
+    port: "3000",
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},

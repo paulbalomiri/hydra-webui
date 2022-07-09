@@ -10,9 +10,9 @@
       :filter="filter"
       head-variant="light"
       table-variant="light"
-      no-border-collapse="true"
-      bordered="true"
-      responsive="true"
+      no-border-collapse
+      bordered
+      responsive
     >
       <template #cell(client_id)="row">
         <b-link @click="showDetails(row.index, row.item)">{{
