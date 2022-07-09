@@ -2,13 +2,19 @@
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.241.1/containers/vue
 {
 	"name": "Vue (Community)",
-	"build": {
-		"dockerfile": "Dockerfile",
-		"context": "..",
-		// Update 'VARIANT' to pick a Node version: 12, 14, 16
-		"args": { "VARIANT": "18-bullseye" }
-	},
+	// "build": {
+	// 	"dockerfile": "Dockerfile",
+	// 	"context": "..",
+	// 	// Update 'VARIANT' to pick a Node version: 12, 14, 16
+	// 	"args": { "VARIANT": "18-bullseye" }
+	// },
+  "dockerComposeFile": [
+    "/docker/auth_stack/docker-compose.yml",
+    "docker-compose.yml"
+  ],
+  "service": "hydra-admin",
 
+  "workspaceFolder": "/workspace/src",
 	// Configure tool-specific properties.
 	"customizations": {
 		// Configure properties specific to VS Code.
@@ -22,9 +28,9 @@
 	},
 	
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	"forwardPorts": [
-		8080
-	],
+	// "forwardPorts": [
+	// 	8080
+	// ],
 	
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "uname -a",

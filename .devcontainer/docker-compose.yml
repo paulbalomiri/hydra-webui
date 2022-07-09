@@ -2,27 +2,31 @@ version: "3.6"
 services:
   hydra-admin:
     build:
-      context: .
-      dockerfile: ./Dockerfile
+      context: /data/auth_stack/ory/hydra-admin/src
+      dockerfile: .devcontainer/Dockerfile
       args:
-        BUILD_TYPE: docker
+       VARIANT: "18-bullseye"
     ports:
-      - "3000:80"
+      - '3000'
     depends_on:
       - hydra
     links:
       - hydra
+    
+    command: /bin/sh -c "while sleep 1000; do :; done"
     environment:
       # See https://stackoverflow.com/questions/69692842/error-message-error0308010cdigital-envelope-routinesunsupported
       # This is needed to avoide some openssl switcheridoo in node 17
-      NODE_OPTIONS: --openssl-legacy-provider
-
-
-      HYDRA_PROXY_URL: "http://hydra:4445"
+      #NODE_OPTIONS: --openssl-legacy-provider 
+      #HYDRA_PROXY_URL: "http://hydra:4445"
       PORT: 3000
-
+      TRAEFIK_ROUTER_MATCH: "Host(`oauth.cante.ro`) && PathPrefix(`/hydra`)"
+    volumes:
+    - "/data/auth_stack/ory/hydra-admin:/workspace:cached"
     networks:
     - gateway
     - auth_stack
     labels:
-      
+      - 'traefik.http.routers.hydra_admin.rule=${TRAEFIK_ROUTER_MATCH:-"Host(`oauth.cante.ro`) && PathPrefix(`/hydra`)"}'
+      - traefik.http.routers.hydra_admin.tls.certresolver=letsencrypt
+      - traefik.http.services.hydra_admin.loadbalancer.server.port=3000
